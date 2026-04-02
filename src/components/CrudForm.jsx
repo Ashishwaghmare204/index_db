@@ -46,7 +46,7 @@ const CrudForm = () => {
   // ── Store ──────────────────────────────────────────────────────────────────
   const storeData = async () => {
     if (!name.trim() || !email.trim()) {
-      toast.warn("Name aur Email dono bharo pehle!");
+      toast.warn("Fill both Name and Email !");
       return;
     }
     try {
@@ -56,7 +56,7 @@ const CrudForm = () => {
       store.add({ name: name.trim(), email: email.trim() });
 
       transaction.oncomplete = () => {
-        toast.success("Data store ho gaya ✅");
+        toast.success("Data stored Successfully ✅");
         addLog(`Added → name: ${name}, email: ${email}`, "success");
         setName("");
         setEmail("");
@@ -81,10 +81,10 @@ const CrudForm = () => {
       req.onsuccess = () => {
         const results = req.result;
         if (results.length === 0) {
-          toast.info("Koi data nahi mila");
+          toast.info("Didn't got any data");
           addLog("Fetch → 0 records", "info");
         } else {
-          toast.success(`${results.length} record(s) mile 🎉`);
+          toast.success(`${results.length} record(s) got 🎉`);
           results.forEach((r) =>
             addLog(`ID:${r.id} → ${r.name} | ${r.email}`, "success")
           );
@@ -105,7 +105,7 @@ const CrudForm = () => {
   const updateData = async () => {
     const id = parseInt(targetId);
     if (!id || !updateName.trim()) {
-      toast.warn("ID aur naya naam dono chahiye!");
+      toast.warn("Required both new name and ID");
       return;
     }
     try {
@@ -117,7 +117,7 @@ const CrudForm = () => {
       req.onsuccess = () => {
         const data = req.result;
         if (!data) {
-          toast.error(`ID ${id} nahi mila ❌`);
+          toast.error(`ID ${id} not found ❌`);
           addLog(`Update → ID ${id} not found`, "error");
           return;
         }
@@ -125,7 +125,7 @@ const CrudForm = () => {
       };
 
       transaction.oncomplete = () => {
-        toast.success("Data update ho gaya ✅");
+        toast.success("Data updated ✅");
         addLog(`Updated ID:${id} → name: ${updateName}`, "success");
         setTargetId("");
         setUpdateName("");
@@ -144,7 +144,7 @@ const CrudForm = () => {
   const deleteData = async () => {
     const id = parseInt(targetId);
     if (!id) {
-      toast.warn("Delete ke liye ID daal!");
+      toast.warn("enter id to delete!");
       return;
     }
     try {
@@ -156,7 +156,7 @@ const CrudForm = () => {
       const getReq = store.get(id);
       getReq.onsuccess = () => {
         if (!getReq.result) {
-          toast.error(`ID ${id} exist nahi karta ❌`);
+          toast.error(`ID ${id} doesn't exist ❌`);
           addLog(`Delete → ID ${id} not found`, "error");
           return;
         }
@@ -164,7 +164,7 @@ const CrudForm = () => {
       };
 
       transaction.oncomplete = () => {
-        toast.success(`ID ${id} delete ho gaya 🗑️`);
+        toast.success(`ID ${id} deleted 🗑️`);
         addLog(`Deleted ID:${id}`, "error");
         setTargetId("");
       };
